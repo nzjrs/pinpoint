@@ -34,6 +34,8 @@ The current presentation thus far:
  - [font=monospace 18px] [shading-opacity=1.0]
  The current presentation thus far:
 #Should break this into smaller bits/slides
+-- [font=monospace 18px] [slide-contents=external.txt]
+
 -- [text-align=center] [duration=12.553503]
 You start by writing down the core concepts that you will be talking about. Then sort and format
 them as a pinpoint presentation in a text editor of your choice. 
