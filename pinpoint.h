@@ -108,6 +108,8 @@ struct _PinPointPoint
 
   const char        *command;
 
+  const char        *slide_contents;
+
   gint              camera_framerate;
   PPResolution      camera_resolution;
 

@@ -82,6 +82,8 @@ static PinPointPoint pin_default_point = {
 
   .command = NULL,
 
+  .slide_contents = NULL,
+
   .camera_framerate = 0,                    /* auto */
   .camera_resolution = {0, 0},              /* auto */
 
@@ -457,6 +459,7 @@ parse_setting (PinPointPoint *point,
   IF_PREFIX("shading-opacity=") point->shading_opacity = FLOAT;
   IF_PREFIX("duration=")   point->duration = FLOAT;
   IF_PREFIX("command=")    point->command = STRING;
+  IF_PREFIX("slide-contents=")    point->slide_contents = STRING;
   IF_PREFIX("transition=") point->transition = STRING;
   IF_PREFIX("camera-framerate=")  point->camera_framerate = INT;
   IF_PREFIX("camera-resolution=") RESOLUTION (point->camera_resolution);
@@ -643,6 +646,7 @@ static void serialize_slide_config (GString       *str,
 
   STRING(transition,"transition=");
   STRING(command,"command=");
+  STRING(slide_contents,"slide-contents=");
   if (point->duration != 0.0)
     FLOAT(duration, "duration="); /* XXX: probably needs special treatment */
 
@@ -840,16 +844,23 @@ pp_parse_slides (PinPointRenderer *renderer,
                       }
 
                     {
-                      char *str = slide_str->str;
+                      if (point->slide_contents)
+                        {
+                          g_file_get_contents (point->slide_contents, &point->text, NULL, NULL);
+                        }
+                      else
+                        {
+                          char *str = slide_str->str;
 
-                    /* trim newlines from start and end. ' ' can be used in the
-                     * insane case that you actually want blank lines before or
-                     * after the text of a slide */
-                      while (*str == '\n') str++;
-                      while ( slide_str->str[strlen(slide_str->str)-1]=='\n')
-                        slide_str->str[strlen(slide_str->str)-1]='\0';
+                        /* trim newlines from start and end. ' ' can be used in the
+                         * insane case that you actually want blank lines before or
+                         * after the text of a slide */
+                          while (*str == '\n') str++;
+                          while ( slide_str->str[strlen(slide_str->str)-1]=='\n')
+                            slide_str->str[strlen(slide_str->str)-1]='\0';
 
-                      point->text = g_intern_string (str);
+                          point->text = g_intern_string (str);
+                        }
                     }
                     if (notes_str->str[0])
                       point->speaker_notes = g_strdup (notes_str->str);
