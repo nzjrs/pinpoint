@@ -83,6 +83,7 @@ static PinPointPoint pin_default_point = {
   .command = NULL,
 
   .slide_contents = NULL,
+  .slide_contents_exec = NULL,
 
   .camera_framerate = 0,                    /* auto */
   .camera_resolution = {0, 0},              /* auto */
@@ -460,6 +461,7 @@ parse_setting (PinPointPoint *point,
   IF_PREFIX("duration=")   point->duration = FLOAT;
   IF_PREFIX("command=")    point->command = STRING;
   IF_PREFIX("slide-contents=")    point->slide_contents = STRING;
+  IF_PREFIX("slide-contents-exec=")    point->slide_contents_exec = STRING;
   IF_PREFIX("transition=") point->transition = STRING;
   IF_PREFIX("camera-framerate=")  point->camera_framerate = INT;
   IF_PREFIX("camera-resolution=") RESOLUTION (point->camera_resolution);
@@ -647,6 +649,7 @@ static void serialize_slide_config (GString       *str,
   STRING(transition,"transition=");
   STRING(command,"command=");
   STRING(slide_contents,"slide-contents=");
+  STRING(slide_contents_exec,"slide-contents-exec=");
   if (point->duration != 0.0)
     FLOAT(duration, "duration="); /* XXX: probably needs special treatment */
 
@@ -847,6 +850,19 @@ pp_parse_slides (PinPointRenderer *renderer,
                       if (point->slide_contents)
                         {
                           g_file_get_contents (point->slide_contents, &point->text, NULL, NULL);
+                        }
+                      else if (point->slide_contents_exec)
+                        {
+                          gint exit;
+                          gboolean ok;
+                          GError *err;
+
+                          ok = g_spawn_command_line_sync (point->slide_contents_exec,
+                                                          &point->text,
+                                                          NULL,
+                                                          &exit,
+                                                          &err);
+
                         }
                       else
                         {
