@@ -1,0 +1,20 @@
+#!/usr/bin/env pinpoint
+
+[bg.jpg]
+[font=Sans 50px]
+[duration=5.000000]
+--
+Welcome to pinpoint
+
+-- 
+A tool for making excellent presentations
+
+-- [command=python gui.py] [font=monospace 18px] [slide-contents-exec=echo 123]
+
+-- [command=python gui.py] [font=monospace 18px] [slide-contents=gui.py]
+
+-- [command=python gui.py] [font=monospace 18px] [slide-contents=gui.py]
+
+-- [command=python gui.py] [font=monospace 18px] [slide-contents-exec=source-highlight -s py -i gui.py -o STDOUT --outlang-def=./pango.outlang]
+
+
