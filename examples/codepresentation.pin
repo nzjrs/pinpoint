@@ -1,0 +1,17 @@
+#!/usr/bin/env pinpoint
+[white]
+[text-color=black]
+[font=Monospace 16px]
+[shading-color=white]
+[shading-opacity=0.0]
+[transition=fade]
+-- [black] [text-color=white] [font=Sans 40px] [shading-color=black] [shading-opacity=0.66]
+Welcome to pinpoint
+
+-- [black] [text-color=white] [font=Sans 40px] [shading-color=black] [shading-opacity=0.66]
+A tool for making excellent CODE! presentations
+
+-- [command=python test.py] [slide-contents-exec=source-highlight -s py -i test.py -o STDOUT --outlang-def=./pango.outlang]
+
+-- [slide-contents-exec=source-highlight -s c -i test.c -o STDOUT --outlang-def=./pango.outlang]
+
